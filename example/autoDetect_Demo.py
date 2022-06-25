@@ -26,7 +26,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
     UI = Demo_UI()
-    UI.resize(400, 300)
+    UI.resize(500, 300)
     UI.show()
 
     sys.exit(app.exec())

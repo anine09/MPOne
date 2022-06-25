@@ -5,3 +5,6 @@
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea
 /source_code
+/example/*.log
+/test/*.log
+/*.log
