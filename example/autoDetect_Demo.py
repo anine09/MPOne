@@ -1,12 +1,12 @@
 import sys
 from PySide6 import QtCore, QtWidgets
-from test import Automatic_Instrument_Detection as autoDetection
+from VISA import Automatic_Instrument_Detection as autoDetection
 
 
 class Demo_UI(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("AutoDetection_Demo_V0.3")
+        self.setWindowTitle("AutoDetection_Demo_V0.0.1")
         self.button = QtWidgets.QPushButton("Detection Instrument")
         self.text = QtWidgets.QLabel("Click the button to start detection Instrument", alignment=QtCore.Qt.AlignCenter)
 
