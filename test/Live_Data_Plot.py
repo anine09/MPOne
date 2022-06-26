@@ -13,8 +13,19 @@ from matplotlib.figure import Figure
 
 class Animator_View(QtWidgets.QWidget):
 
-    def __init__(self, debug=False):
+    def __init__(self, debug=True):
         super(Animator_View, self).__init__()
+
+        self.weight = 0.5
+        self.ibas = random.random()
+
+        self.I = 10
+        self.V = 6
+        self.R = 0
+
+        self.I_set = []
+        self.V_set = []
+        self.R_set = []
 
         self.setWindowTitle("Live Data Plot V0.0.1")
         layout = QtWidgets.QGridLayout(self)
@@ -27,7 +38,7 @@ class Animator_View(QtWidgets.QWidget):
                                           )
         Real_Time_Info.setFont(QFont("Consolas", 16, QFont.Bold))
         Real_Time_Info.setMargin(100)
-        Current_Canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        Current_Canvas = FigureCanvas(Figure(figsize=(5, 3)).set_tight_layout(True))
         Voltage_Canvas = FigureCanvas(Figure(figsize=(5, 3)))
         Resistance_Canvas = FigureCanvas(Figure(figsize=(5, 3)))
 
@@ -37,27 +48,88 @@ class Animator_View(QtWidgets.QWidget):
         layout.addWidget(Resistance_Canvas, 2, 1, 1, -1)
         layout.addWidget(NavigationToolbar(Resistance_Canvas, self), 3, 1, 1, -1)
 
-        Current_Canvas_Fig = Current_Canvas.figure.subplots()
-        Voltage_Canvas_Fig = Voltage_Canvas.figure.subplots()
-        Resistance_Canvas_Fig = Resistance_Canvas.figure.subplots()
+        self.Current_Canvas_Fig = Current_Canvas.figure.subplots()
+        self.Current_Canvas_Fig.set_ylim(5, 15)
+        self.Current_Canvas_Fig.set_xlabel("Time")
+        self.Current_Canvas_Fig.set_ylabel("I(A)")
+        # self.Current_Canvas_Fig.set_tight_layout(tight)[source]
+
+        self.Voltage_Canvas_Fig = Voltage_Canvas.figure.subplots()
+        self.Resistance_Canvas_Fig = Resistance_Canvas.figure.subplots()
 
         # debug ON
         if debug:
-            self.debug()
+            # display Debug Mode ON
+            Debug_State = QtWidgets.QLabel("Debug Mode ON", self)
+            Debug_State.setGeometry(0, 0, 1000, 80)
+            Debug_State.setFont(QFont("Consolas", 30, QFont.Bold))
+            Debug_State.setStyleSheet("color:red")
+
+            self.setWindowTitle("[Debug Mode]Live Data Plot V0.0.1")
+
+            # self.debug()
         else:
             pass
+
+        t = np.linspace(0, 10, 10)
+        for k in range(10):
+            self.I = self.I + random.random()
+            # self.V = self.V + random.random()
+            self.I_set.append(self.I)
+            # self.V_set.append(self.V)
+            # self.R = self.V / self.I
+            # self.R_set.append(self.R)
+
+        self._line, = self.Current_Canvas_Fig.plot(t, self.I_set)
+        self._timer = Current_Canvas.new_timer(50)
+        self._timer.add_callback(self._update_canvas)
+        self._timer.start()
+
+        # self._Current_Canvas_Fig, = self.Current_Canvas_Fig.plot(t, self.I_set)
+        # self._Ctimer = Current_Canvas.new_timer(50)
+        # self._Voltage_Canvas_Fig, = self.Voltage_Canvas_Fig.plot(t, self.V_set)
+        # self._Vtimer = Voltage_Canvas.new_timer(50)
+        # self._Resistance_Canvas_Fig, = self.Resistance_Canvas_Fig.plot(t, self.R_set)
+        # self._Rtimer = Resistance_Canvas.new_timer(50)
+
+        # self._Ctimer.add_callback(self._update_canvas)
+        # self._Ctimer.start()
+        # self._Vtimer.add_callback(self._update_canvas)
+        # self._Vtimer.start()
+        # self._Rtimer.add_callback(self._update_canvas)
+        # self._Rtimer.start()
+
+    def _update_canvas(self):
+        t = np.linspace(0, 10, 10)
+        self.I_set = []
+        # self.V_set = []
+        # self.R_set = []
+        for k in range(10):
+            self.I = self.I + random.random()
+            # self.V = self.V + random.random()
+            self.I_set.append(self.I)
+            # self.V_set.append(self.V)
+            # self.R = self.V / self.I
+            # self.R_set.append(self.R)
+
+        self._line.set_data(t, self.I_set)
+        self._line.figure.canvas.draw()
+        # self._Current_Canvas_Fig.set_data(t, self.I_set)
+        # self._Voltage_Canvas_Fig.set_data(t, self.V_set)
+        # self._Resistance_Canvas_Fig.set_data(t, self.R_set)
+        # self._Current_Canvas_Fig.figure.canvas.draw()
+        # self._Voltage_Canvas_Fig.figure.canvas.draw()
+        # self._Resistance_Canvas_Fig.figure.canvas.draw()
 
     def debug(self, I=10):
         weight = 0.5
         ibas = random.random()
-        I = 10 + random.random()
-        V = weight * I + ibas
-        R = V / I
+        self.I = self.I + random.random()
+        self.V = weight * self.I + ibas
+        self.R = self.V / self.I
 
 
 if __name__ == "__main__":
-    # Check whether there is already a running QApplication (e.g., if running
-    # from an IDE).
     qapp = QtWidgets.QApplication.instance()
     if not qapp:
         qapp = QtWidgets.QApplication(sys.argv)
