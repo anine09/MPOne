@@ -1,9 +1,9 @@
 import pyvisa
 import toml
 import time
-from . import manual
 
-class Instrument():
+
+class Instrument:
     inst_type = None
     man = None
 
@@ -14,18 +14,19 @@ class Instrument():
         self.query_inst_type()
 
     def query_inst_type(self):
-        inst_IDN = str(self.inst.query("*IDN? "))
+        from . import manual
+        inst_IDN = self.inst.query("*IDN?\x20")
 
         match inst_IDN:
             # WAYNE KERR 41100
             case "WAYNE KERR, 41100, 17411029, 4.143Z3\n":
-                self.inst_type = "WAYNE KERR 41100"
+                self.inst_type = "wk_41100"
                 self.man = manual.wk_41100
                 return self.inst_type
 
             # Tektronix Keithley 2636B
             case "Keithley Instruments Inc., Model 2636B, 4308079, 3.2.2\n":
-                self.inst_type = "Tektronix Keithley 2636B"
+                self.inst_type = "tk_2636B"
                 self.man = manual.tek_2636B
                 return self.inst_type
 
@@ -35,56 +36,86 @@ class Instrument():
 
     def init(self, config_file):
         config = toml.load(config_file)
+
         if "Level" in config["Init_Config"]:
             Level = config["Init_Config"]["Level"]
-            self.inst.write(f":MEAS:LEVel {Level}")
+            self.set(Level=Level)
+
         if "Frequency" in config["Init_Config"]:
             Frequency = config["Init_Config"]["Frequency"]
-            self.inst.write(f":MEAS:FREQuency {Frequency}")
+            self.set(Freq=Frequency)
+
         if "Speed" in config["Init_Config"]:
             Speed = config["Init_Config"]["Speed"]
-            self.inst.write(f":MEAS:SPEED {Speed}")
+            self.set(Speed=Speed)
+
         if "Range" in config["Init_Config"]:
             Range = config["Init_Config"]["Range"]
-            self.inst.write(f":MEAS:RANGE {Range}")
+            self.set(Range=Range)
+
         if "Function_1" in config["Init_Config"]:
             Function_1 = config["Init_Config"]["Function_1"]
-            self.inst.write(f":MEAS:FUNC1 {Function_1}")
+            self.set(Func_1=Function_1)
+
         if "Function_2" in config["Init_Config"]:
             Function_2 = config["Init_Config"]["Function_2"]
-            self.inst.write(f":MEAS:FUNC2 {Function_2}")
+            self.set(Func_2=Function_2)
+
         if "Bias" in config["Init_Config"]:
             Bias = config["Init_Config"]["Bias"]
-            self.inst.write(f":MEAS:BIAS {Bias}")
+            self.set(Bias=Bias)
 
     def set(self, **set_dict):
+
         if "Level" in set_dict:
             Level = set_dict["Level"]
             self.man.set_Level(Level)
 
-        if "Freq" in set_dict:
-            Freq = set_dict["Freq"]
-            self.man.set_Freq(Freq)
-
-        if "Speed" in set_dict:
-            Speed = set_dict["Speed"]
-            self.inst.write(f":MEAS:SPEED {Speed}")
-
         if "Range" in set_dict:
             Range = set_dict["Range"]
-            self.inst.write(f":MEAS:RANGE {Range}")
-        if "Func_1" in set_dict:
-            Func_1 = set_dict["Func_1"]
-            self.inst.write(f":MEAS:FUNC1 {Func_1}")
-        if "Func_2" in set_dict:
-            Func_2 = set_dict["Func_2"]
-            self.inst.write(f":MEAS:FUNC2 {Func_2}")
+            self.man.set_Range(Range)
 
-    def measure(self):
-        result = self.man.measure()
-        func_1, func_2 = float(result[:14]), float(result[16:-1])
-        return func_1, func_2
+        # TODO: add Func for two inst
+        if "Func" in set_dict:
+            pass
 
+        # wk_41100 ONLY!
+        if self.inst_type == "wk_41100":
+            if "Freq" in set_dict:
+                Freq = set_dict["Freq"]
+                self.man.set_Freq(Freq)
+
+            if "Speed" in set_dict:
+                Speed = set_dict["Speed"]
+                self.man.set_Speed(Speed)
+
+            # if "Func_1" in set_dict:
+            #     Func_1 = set_dict["Func_1"]
+            #     self.man.set_Func_1(Func_1)
+            #
+            # if "Func_2" in set_dict:
+            #     Func_2 = set_dict["Func_2"]
+            #     self.man.set_Func_2(Func_2)
+
+            if "Bias" in set_dict:
+                Bias = set_dict["Bias"]
+                self.man.set_Bias(Bias)
+
+        # tk_2636B ONLY!
+        # TODO: write the tk ONLY things
+        if self.inst_type == "tk_2336B":
+            if "Limit" in set_dict:
+                pass
+            if "Output" in set_dict:
+                pass
+
+    def measure(self, measure_func_=None):
+        if self.inst_type == "tk_2636B" and measure_func_ is not None:
+            return self.man.measure(measure_func_)
+        return self.man.measure()
+
+
+""" 
     def task_flow(self, config_file):
         config = toml.load(config_file)
         Task_Num = len(config["Task"])
@@ -103,12 +134,10 @@ class Instrument():
             else:
                 freq_step = task["Frequency"]["Step"]
 
-            for freq in range(freq_start, freq_end + 1, freq_step):
+            for freq in range_list(freq_start, freq_end + 1, freq_step):
                 self.set(Freq=freq)  # set freq
                 func_1, func_2 = self.measure()  # measure
                 print("Freq: ", freq, "Func_1: ", func_1, "Func_2: ", func_2)
 
             print("Task@", task["ID"], "Done!")
-
-    def smu_reset(self, channel):
-        self.man.smu_reset()
+"""
