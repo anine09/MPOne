@@ -1,10 +1,8 @@
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/MPOne.iml
-/.idea/inspectionProfiles/profiles_settings.xml
-/.idea/inspectionProfiles/Project_Default.xml
 /.idea
-/source_code
+/source_code/
 /example/*.log
-/test/*.log
+/test/
 /*.log
+/TODO.md
+/test.ipynb
+/test.py
