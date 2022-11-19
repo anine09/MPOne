@@ -1,2 +1,0 @@
-def makegetter():
-    pass

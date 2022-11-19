@@ -1,2 +1,0 @@
-def SweepVLogMeasureI():
-    pass

@@ -1,2 +1,0 @@
-def SweepIListMeasureV():
-    pass
