@@ -3,277 +3,363 @@ import pyvisa
 rm = pyvisa.ResourceManager()
 inst = rm.open_resource(f"GPIB0::9::INSTR")
 
+__channel__ = "a"
 
-class smu:
-    channel = None
 
-    def __init__(self, channel):
-        self.channel = channel
+def abort():
+    pass
 
-    def abort(self):
-        pass
 
-    def buffer_getstats(self):
-        pass
+def buffer_getstats():
+    pass
 
-    def buffer_recalculatestats(self):
-        pass
 
-    def cal_adjustdate(self):
-        pass
+def buffer_recalculatestats():
+    pass
 
-    def cal_date(self):
-        pass
 
-    def cal_due(self):
-        pass
+def cal_adjustdate():
+    pass
 
-    def cal_lock(self):
-        pass
 
-    def cal_password(self):
-        pass
+def cal_date():
+    pass
 
-    def cal_polarity(self):
-        pass
 
-    def cal_restore(self):
-        pass
+def cal_due():
+    pass
 
-    def cal_save(self):
-        pass
 
-    def cal_state(self):
-        pass
+def cal_lock():
+    pass
 
-    def cal_unlock(self):
-        pass
 
-    def contact_calibratehi(self):
-        pass
+def cal_password():
+    pass
 
-    def contact_calibratelo(self):
-        pass
 
-    def contact_check(self):
-        pass
+def cal_polarity():
+    pass
 
-    def contact_r(self):
-        pass
 
-    def contact_speed(self):
-        pass
+def cal_restore():
+    pass
 
-    def contact_threshold(self):
-        pass
 
-    def makebuffer(self):
-        pass
+def cal_save():
+    pass
 
-    def measure_analogfilter(self):
-        pass
 
-    def measure_autorange(self):
-        pass
+def cal_state():
+    pass
 
-    def measure_autozero(self):
-        pass
 
-    def measure_calibrate(self):
-        pass
+def cal_unlock():
+    pass
 
-    def measure_count(self):
-        pass
 
-    def measure_delay(self):
-        pass
+def contact_calibratehi():
+    pass
 
-    def measure_delayfactor(self):
-        pass
 
-    def measure_filter_count(self):
-        pass
+def contact_calibratelo():
+    pass
 
-    def measure_filter_enable(self):
-        pass
 
-    def measure_filter_type(self):
-        pass
+def contact_check():
+    pass
 
-    def measure_highcrangedelayfactor(self):
-        pass
 
-    def measure_interval(self):
-        pass
+def contact_r():
+    pass
 
-    def measure_lowrange(self):
-        pass
 
-    def measure_nplc(self):
-        pass
+def contact_speed():
+    pass
 
-    def measure_overlapped(self):
-        pass
 
-    def measure_range(self):
-        pass
+def contact_threshold():
+    pass
 
-    def measure_rel_enable(self):
-        pass
 
-    def measure_rel_level(self):
-        pass
+def makebuffer():
+    pass
 
-    def measure(self):
-        pass
 
-    def measure_andstep(self):
-        pass
+def measure_analogfilter():
+    pass
 
-    def nvbuffer(self):
-        pass
 
-    def reset(self):
-        inst.write(f"smu{self.channel}.reset()")
-        inst.write("reset()")
+def measure_autorange(measure_func_, STATE, channel=__channel__):
+    inst.write(f"smu{channel}.measure.autorange{measure_func_} = smu{channel}.AUTORANGE_{STATE}")
 
-    def savebuffer(self):
-        pass
 
-    def sense(self):
-        pass
+def measure_autozero():
+    pass
 
-    def source_autorange(self):
-        pass
 
-    def source_calibrate(self):
-        pass
+def measure_calibrate():
+    pass
 
-    def source_compliance(self):
-        pass
 
-    def source_delay(self):
-        pass
+def measure_count():
+    pass
 
-    def source_func(self):
-        pass
 
-    def source_highc(self):
-        pass
+def measure_delay():
+    pass
 
-    def source_level(self):
-        pass
 
-    def source_limit(self):
-        pass
+def measure_delayfactor():
+    pass
 
-    def source_lowrange(self):
-        pass
 
-    def source_offfunc(self):
-        pass
+def measure_filter_count():
+    pass
 
-    def source_offlimit(self):
-        pass
 
-    def source_offmode(self):
-        pass
+def measure_filter_enable():
+    pass
 
-    def source_output(self):
-        pass
 
-    def source_outputenableaction(self):
-        pass
+def measure_filter_type():
+    pass
 
-    def source_range(self):
-        pass
 
-    def source_settling(self):
-        pass
+def measure_highcrangedelayfactor():
+    pass
 
-    def source_sink(self):
-        pass
 
-    def trigger_arm_count(self):
-        pass
+def measure_interval():
+    pass
 
-    def trigger_arm_set(self):
-        pass
 
-    def trigger_stimulus(self):
-        pass
+def measure_lowrange():
+    pass
 
-    def trigger_ARMED_EVENT_ID(self):
-        pass
 
-    def trigger_autoclear(self):
-        pass
+def measure_nplc():
+    pass
 
-    def trigger_count(self):
-        pass
 
-    def trigger_endpulse_action(self):
-        pass
+def measure_overlapped():
+    pass
 
-    def trigger_endpulse_set(self):
-        pass
 
-    def trigger_endpulse_stimulus(self):
-        pass
+def measure_range(measure_func_, max_value, channel=__channel__):
+    inst.write(f"smu{channel}.measure.range{measure_func_} = {max_value}")
 
-    def trigger_endsweep_action(self):
-        pass
 
-    def trigger_IDLE_EVENT_ID(self):
-        pass
+def measure_rel_enable():
+    pass
 
-    def trigger_initiate(self):
-        pass
 
-    def trigger_measure_action(self):
-        pass
+def measure_rel_level():
+    pass
 
-    def trigger_measure_set(self):
-        pass
 
-    def trigger_measure_stimulus(self):
-        pass
+def measure(measure_func_, channel=__channel__):
+    result = inst.query(f"print(smu{channel}.measure.{measure_func_}())")
+    if measure_func_ == "iv":
+        return float(result[:11]), float(result[12:-1])
+    return float(result)
 
-    def trigger_measure(self):
-        pass
 
-    def trigger_MEASURE_COMPLETE_EVENT_ID(self):
-        pass
+def measure_andstep():
+    pass
 
-    def trigger_PULES_COMPLETE_EVENT_ID(self):
-        pass
 
-    def trigger_source_action(self):
-        pass
+def nvbuffer():
+    pass
 
-    def trigger_source_limit(self):
-        pass
 
-    def trigger_source_linear(self):
-        pass
+def reset(channel=__channel__):
+    inst.write(f"smu{channel}.reset()")
 
-    def trigger_source_list(self):
-        pass
 
-    def trigger_source_log(self):
-        pass
+def savebuffer():
+    pass
 
-    def trigger_source_set(self):
-        pass
 
-    def trigger_source_stimulus(self):
-        pass
+def sense():
+    pass
 
-    def trigger_SOURCE_COMPLETE_EVENT_ID(self):
-        pass
 
-    def trigger_SWEEP_COMPLETE_EVENT_ID(self):
-        pass
+def source_autorange(source_func_, STATE, channel=__channel__):
+    inst.write(f"smu{channel}.source.autorange{source_func_} = smu{channel}.AUTORANGE_{STATE}")
 
-    def trigger_SWEEPING_EVENT_ID(self):
-        pass
+
+def source_calibrate():
+    pass
+
+
+def source_compliance():
+    pass
+
+
+def source_delay():
+    pass
+
+
+def source_func(source_function, channel=__channel__):
+    inst.write(f"smu{channel}.source.func = smu{channel}.OUTPUT_{source_function}")
+
+
+def source_highc():
+    pass
+
+
+def source_level(source_func_, level_value, channel=__channel__):
+    inst.write(f"smu{channel}.source.level{source_func_} = {level_value}")
+
+
+def source_limit(source_func_, limit_value, channel=__channel__):
+    inst.write(f"smu{channel}.source.limit{source_func_} = {limit_value}")
+
+
+def source_lowrange():
+    pass
+
+
+def source_offfunc():
+    pass
+
+
+def source_offlimit():
+    pass
+
+
+def source_offmode():
+    pass
+
+
+def source_output(STATE, channel=__channel__):
+    inst.write(f"smu{channel}.source.output = smu{channel}.OUTPUT_{STATE}")
+
+
+def source_outputenableaction():
+    pass
+
+
+def source_range(source_func_, range_value, channel=__channel__):
+    inst.write(f"smu{channel}.source.range{source_func_} = {range_value}")
+
+
+def source_settling():
+    pass
+
+
+def source_sink():
+    pass
+
+
+def trigger_arm_count():
+    pass
+
+
+def trigger_arm_set():
+    pass
+
+
+def trigger_stimulus():
+    pass
+
+
+def trigger_ARMED_EVENT_ID():
+    pass
+
+
+def trigger_autoclear():
+    pass
+
+
+def trigger_count():
+    pass
+
+
+def trigger_endpulse_action():
+    pass
+
+
+def trigger_endpulse_set():
+    pass
+
+
+def trigger_endpulse_stimulus():
+    pass
+
+
+def trigger_endsweep_action():
+    pass
+
+
+def trigger_IDLE_EVENT_ID():
+    pass
+
+
+def trigger_initiate():
+    pass
+
+
+def trigger_measure_action():
+    pass
+
+
+def trigger_measure_set():
+    pass
+
+
+def trigger_measure_stimulus():
+    pass
+
+
+def trigger_measure():
+    pass
+
+
+def trigger_MEASURE_COMPLETE_EVENT_ID():
+    pass
+
+
+def trigger_PULES_COMPLETE_EVENT_ID():
+    pass
+
+
+def trigger_source_action():
+    pass
+
+
+def trigger_source_limit():
+    pass
+
+
+def trigger_source_linear():
+    pass
+
+
+def trigger_source_list():
+    pass
+
+
+def trigger_source_log():
+    pass
+
+
+def trigger_source_set():
+    pass
+
+
+def trigger_source_stimulus():
+    pass
+
+
+def trigger_SOURCE_COMPLETE_EVENT_ID():
+    pass
+
+
+def trigger_SWEEP_COMPLETE_EVENT_ID():
+    pass
+
+
+def trigger_SWEEPING_EVENT_ID():
+    pass
