@@ -161,7 +161,7 @@ def measure_rel_level():
 def measure(measure_func_, channel=__channel__):
     result = inst.query(f"print(smu{channel}.measure.{measure_func_}())")
     if measure_func_ == "iv":
-        return float(result[:10]), float(result[10:])
+        return float(result[:11]), float(result[12:-1])
     return float(result)
 
 

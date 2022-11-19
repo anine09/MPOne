@@ -33,14 +33,14 @@ def set_Range(range_list):
             else:
                 smu.source_range("v", range_value)
 
-# TODO: write Func for tk
-def set_Func():
-    pass
 
-# TODO: write Limit(ONLY)
-def set_Limit():
-    pass
+def set_Func(func):
+    smu.source_func(func)
 
-# TODO: write Output(ONLY)
-def set_Output():
-    pass
+
+def set_Limit(limit):
+    smu.source_limit(limit["source_func_"], limit["limit_value"])
+
+
+def set_Output(output_STATE):
+    smu.source_output(output_STATE)

@@ -105,16 +105,18 @@ def SCALE_():
     pass
 
 
-def LIMit1():
-    pass
+# :MEAS:LIMit1 <disc>
+def LIMit1(limit_1):
+    inst.write(f":MEAS:LIMit1\x20{limit_1}")
 
 
 def LIMit1_():
     pass
 
 
-def LIMit2():
-    pass
+# :MEAS:LIMit2 <disc>
+def LIMit2(limit_2):
+    inst.write(f":MEAS:LIMit2\x20{limit_2}")
 
 
 def LIMit2_():
