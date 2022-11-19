@@ -1,4 +1,0 @@
-pyvisa
-toml
-pyvisa-py
-gpib-ctypes
