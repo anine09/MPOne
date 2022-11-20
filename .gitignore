@@ -10,3 +10,8 @@
 /quick_debug.py
 /VISA/
 /test/
+mpone/__pycache__/
+mpone/visa/manual/__pycache__/
+mpone/visa/manual/tek_2636B/__pycache__/
+mpone/visa/manual/wk_41100/__pycache__/
+mpone/visa/__pycache__/

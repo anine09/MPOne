@@ -11,12 +11,12 @@ except Exception as e:
 
 setup(
     name="mpone",
-    version="0.0.1",
+    version="0.0.3",
     keywords=["VISA", "Material"],
     description="MPOne is more than One",
     long_description=long_description,
     long_description_content_type='text/markdown',
-    python_requires=">=3.8.0",
+    python_requires=">=3.10.0",
     license="MIT Licence",
 
     url="https://github.com/anine09/MPOne",
@@ -25,6 +25,6 @@ setup(
 
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["pyvisa", "toml", "pyvisa-py", "gpib-ctypes"],
+    install_requires=["pyvisa", "pyvisa-py", "gpib-ctypes"],
     platforms="any"
 )
