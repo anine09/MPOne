@@ -1,2 +1,2 @@
 def savebuffer():
-    pass
+    ...

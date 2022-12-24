@@ -1,2 +1,2 @@
 def meminfo():
-    pass
+    ...

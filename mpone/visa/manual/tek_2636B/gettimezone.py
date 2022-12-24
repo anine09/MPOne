@@ -1,2 +1,2 @@
 def gettimezone():
-    pass
+    ...

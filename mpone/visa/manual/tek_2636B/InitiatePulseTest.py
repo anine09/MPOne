@@ -1,2 +1,2 @@
 def InitiatePulseTest():
-    pass
+    ...

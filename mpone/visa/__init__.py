@@ -15,22 +15,20 @@ class Instrument:
         from . import manual
         inst_IDN = self.inst.query("*IDN?\x20")
 
-        match inst_IDN:
+        if inst_IDN == "WAYNE KERR, 41100, 17411029, 4.143Z3\n":
             # WAYNE KERR 41100
-            case "WAYNE KERR, 41100, 17411029, 4.143Z3\n":
-                self.inst_type = "wk_41100"
-                self.man = manual.wk_41100
-                return self.inst_type
+            self.inst_type = "wk_41100"
+            self.man = manual.wk_41100
+            return self.inst_type
 
+        elif inst_IDN == "Keithley Instruments Inc., Model 2636B, 4308079, 3.2.2\n":
             # Tektronix Keithley 2636B
-            case "Keithley Instruments Inc., Model 2636B, 4308079, 3.2.2\n":
-                self.inst_type = "tek_2636B"
-                self.man = manual.tek_2636B
-                return self.inst_type
-
+            self.inst_type = "tek_2636B"
+            self.man = manual.tek_2636B
+            return self.inst_type
+        else:
             # Not Support
-            case _:
-                raise NameError("Temporary does not support this instrument.")
+            raise NameError("Temporary does not support this instrument.")
 
     def set(self, **set_dict):
 
@@ -77,8 +75,17 @@ class Instrument:
             if "Output" in set_dict:
                 Output_STATE = set_dict["Output"].upper()
                 self.man.set_Output(Output_STATE)
+            
 
     def measure(self, measure_func_=None):
         if self.inst_type == "tek_2636B" and measure_func_ is not None:
             return self.man.measure(measure_func_)
         return self.man.measure()
+
+    def raw_command(self, command, communication_mode="w"):
+        if communication_mode == "w":
+            self.inst.write(f"{command}")
+        elif communication_mode == "q":
+            return self.inst.query(f"{command}")
+        elif communication_mode == "r":
+            return self.inst.read()

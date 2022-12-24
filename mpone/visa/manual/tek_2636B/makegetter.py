@@ -1,2 +1,2 @@
 def makegetter():
-    pass
+    ...

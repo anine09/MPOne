@@ -1,2 +1,2 @@
 def settime():
-    pass
+    ...
