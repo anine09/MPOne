@@ -1,7 +1,16 @@
 import flet as ft
-from utils.responsive_menu_layout import ResponsiveMenuLayout as Layout, \
-    create_page, \
-    toggle_menu_width, toggle_icons_only
+from .Layout.responsive_menu_layout import (
+    ResponsiveMenuLayout as Layout,
+    toggle_menu_width,
+    toggle_icons_only
+)
+from .Page import (
+    Instrument_info,
+    Plot_Chart,
+    Tabular_View,
+    Settings,
+    Help_Information
+)
 
 
 def main(page: ft.Page, title="MPOne Easy GUI Project"):
@@ -23,7 +32,7 @@ def main(page: ft.Page, title="MPOne Easy GUI Project"):
                 selected_icon=ft.icons.INFO,
                 label="Instrument Info"
             ),
-            ft.FilledButton()
+            Instrument_info.create_content()
         ),
         (
             dict(
@@ -32,7 +41,7 @@ def main(page: ft.Page, title="MPOne Easy GUI Project"):
                 label="Plot Chart",
                 route="plot-chart"
             ),
-            ft.Switch()
+            Plot_Chart.create_content()
         ),
         (
             dict(
@@ -41,7 +50,16 @@ def main(page: ft.Page, title="MPOne Easy GUI Project"):
                 label="Tabular View",
                 route="tabular-view"
             ),
-            ft.Slider(value=0.3)
+            Tabular_View.create_content()
+        ),
+        (
+            dict(
+                icon=ft.icons.SETTINGS_OUTLINED,
+                selected_icon=ft.icons.SETTINGS,
+                label="Settings",
+                route="settings"
+            ),
+            Settings.create_content()
         ),
         (
             dict(
@@ -50,9 +68,10 @@ def main(page: ft.Page, title="MPOne Easy GUI Project"):
                 label="Help Information",
                 route="help-information"
             ),
-            ft.TextField(label="Standard")
+            Help_Information.create_content()
         )
     ]
+
     menu_layout = Layout(page, pages)
 
     page.appbar.actions = [
@@ -61,7 +80,8 @@ def main(page: ft.Page, title="MPOne Easy GUI Project"):
                 ft.Text("Minimize\nto icons"),
                 ft.Switch(on_change=lambda e: toggle_icons_only(menu_layout)),
                 ft.Text("Menu\nwidth"),
-                ft.Switch(value=True, on_change=lambda e: toggle_menu_width(menu_layout)),
+                ft.Switch(
+                    value=True, on_change=lambda e: toggle_menu_width(menu_layout)),
             ]
         )
     ]
