@@ -1,73 +1,78 @@
 import flet as ft
+from utils.responsive_menu_layout import ResponsiveMenuLayout as Layout, \
+    create_page, \
+    toggle_menu_width, toggle_icons_only
 
 
-def main(page: ft.Page):
-    page.title = "MPOne"
-    page.window_width = 1100
+def main(page: ft.Page, title="MPOne Easy GUI Project"):
+    page.title = title
+    page.window_width = 1280
     page.window_height = 720
 
-    
-    main_AppBar = ft.AppBar(
-        # leading=ft.Image(
-        #     src="logo7.png",
-        #     width=50,
-        #     height=10,
-        #     fit=ft.ImageFit.SCALE_DOWN,
-        # ),
-        leading=ft.Icon(name=ft.icons.LOGO_DEV),
-        leading_width=60,
-        title=ft.Text("MPOne Easy GUI Project"),
-        center_title=False,
-        bgcolor=ft.colors.SURFACE_VARIANT,
-    )
-    page.appbar = main_AppBar
+    menu_button = ft.IconButton(ft.icons.MENU)
 
-    main_NavigationRai = ft.NavigationRail(
-        selected_index=0,
-        label_type=ft.NavigationRailLabelType.ALL,
-        # extended=True,
-        min_width=100,
-        min_extended_width=400,
-        leading=ft.FloatingActionButton(icon=ft.icons.LAN, text="Add"),
-        group_alignment=-0.9,
-        destinations=[
-            ft.NavigationRailDestination(
-                icon=ft.icons.INFO_OUTLINE,
+    page.appbar = ft.AppBar(
+        leading=menu_button,
+        leading_width=40,
+    )
+
+    pages = [
+        (
+            dict(
+                icon=ft.icons.INFO_OUTLINED,
                 selected_icon=ft.icons.INFO,
-                label="Info",
+                label="Instrument Info"
             ),
-            ft.NavigationRailDestination(
+            ft.FilledButton()
+        ),
+        (
+            dict(
                 icon=ft.icons.INSERT_CHART_OUTLINED,
                 selected_icon=ft.icons.INSERT_CHART,
-                label="Chart",
+                label="Plot Chart",
+                route="plot-chart"
             ),
-            ft.NavigationRailDestination(
+            ft.Switch()
+        ),
+        (
+            dict(
                 icon=ft.icons.TABLE_CHART_OUTLINED,
                 selected_icon=ft.icons.TABLE_CHART,
-                label="Tabular",
+                label="Tabular View",
+                route="tabular-view"
             ),
-            ft.NavigationRailDestination(
+            ft.Slider(value=0.3)
+        ),
+        (
+            dict(
                 icon=ft.icons.HELP_OUTLINE,
                 selected_icon=ft.icons.HELP,
-                label="Help",
-            )
-        ],
-    )
+                label="Help Information",
+                route="help-information"
+            ),
+            ft.TextField(label="Standard")
+        )
+    ]
+    menu_layout = Layout(page, pages)
 
-
-    page.add(
+    page.appbar.actions = [
         ft.Row(
             [
-                main_NavigationRai,
-                ft.VerticalDivider(width=1),
-            ],
-            expand=True,
-        ),
+                ft.Text("Minimize\nto icons"),
+                ft.Switch(on_change=lambda e: toggle_icons_only(menu_layout)),
+                ft.Text("Menu\nwidth"),
+                ft.Switch(value=True, on_change=lambda e: toggle_menu_width(menu_layout)),
+            ]
+        )
+    ]
+
+    menu_layout.navigation_rail.leading = ft.ElevatedButton(
+        "Add", icon=ft.icons.LAN,
     )
 
+    page.add(menu_layout)
 
-ft.app(
-    target=main,
-    assets_dir="assets",
+    menu_button.on_click = lambda e: menu_layout.toggle_navigation()
 
-)
+
+ft.app(target=main)

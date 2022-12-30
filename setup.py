@@ -16,7 +16,7 @@ setup(
     description="MPOne is more than One",
     long_description=long_description,
     long_description_content_type='text/markdown',
-    python_requires=">=3.10.0",
+    python_requires=">=3.8.0",
     license="MIT Licence",
 
     url="https://github.com/anine09/MPOne",
@@ -25,6 +25,6 @@ setup(
 
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["pyvisa", "pyvisa-py", "gpib-ctypes"],
+    install_requires=["pyvisa", "kaleido==0.1.0post1"],
     platforms="any"
 )
