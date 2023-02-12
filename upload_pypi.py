@@ -23,7 +23,10 @@ def upload_win():
     os.system("python -m build")
 
 def upload_linux():
-    raise NotImplementedError
+    print("rm old dist")
+    os.system("rm -rf dist")
+    print("run: python -m build")
+    os.system("python -m build")
 
 
 if __name__ == "__main__":
