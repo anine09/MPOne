@@ -21,8 +21,6 @@ def upload_win():
     os.system("rmdir /q/s dist")
     print("run: python -m build")
     os.system("python -m build")
-    print("run: upload to test pypi")
-    os.system("twine upload --repository testpypi dist/*")
 
 def upload_linux():
     raise NotImplementedError
