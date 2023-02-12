@@ -27,7 +27,7 @@ def upload_win():
     print("del old dist")
     os.system("rmdir /q/s dist")
     print("run: python -m build")
-    # os.system("python -m build")
+    os.system("python -m build")
     print("run: upload to pypi")
     os.system("twine upload --repository pypi dist/*")
 
