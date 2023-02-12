@@ -1,17 +1,7 @@
 /.idea/
-/example/*.log
-/*.log
-/TODO.md
-/.pypirc
 /dist/
-/build/
 /mpone.egg-info/
-quick_debug.py
-test.py
-test.ipynb
-test_dual.py
 /test/
 */__pycache__/
 .vscode
 .ipynb_checkpoints
-/source

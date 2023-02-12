@@ -32,8 +32,6 @@ def upload_win():
     os.system("twine upload --repository pypi dist/*")
 
 def upload_linux():
-    print("rm old dist")
-    os.system("rm -rf dist")
     print("run: python -m build")
     os.system("python -m build")
 

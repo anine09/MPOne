@@ -28,7 +28,7 @@ class Instrument:
             return self.inst_type
         else:
             # Not Support
-            raise NameError("Temporary does not support this instrument.")
+            raise NotImplementedError("Temporary does not support this instrument.")
 
     def set(self, **set_dict):
 
@@ -75,7 +75,6 @@ class Instrument:
             if "Output" in set_dict:
                 Output_STATE = set_dict["Output"].upper()
                 self.man.set_Output(Output_STATE)
-            
 
     def measure(self, measure_func_=None):
         if self.inst_type == "tek_2636B" and measure_func_ is not None:
