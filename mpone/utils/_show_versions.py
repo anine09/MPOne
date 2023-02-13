@@ -37,6 +37,7 @@ def _get_deps_info():
 
     """
     deps = [
+        "mpone",
         "pip",
         "pyvisa",
         "numpy",
@@ -47,7 +48,7 @@ def _get_deps_info():
     ]
 
     deps_info = {
-        "mpone": __version__,
+        "mpone-dev": __version__,
     }
 
     from importlib.metadata import version, PackageNotFoundError
