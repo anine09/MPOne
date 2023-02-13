@@ -4,14 +4,17 @@ import pytz
 import re
 import sys
 
-import mpone
-
-NOW_VERSION = mpone.__version__
-
 
 def fix_version():
     with open("pyproject.toml", "rt") as file:
         pyproject = file.read()
+    
+    with open("mpone/__init__.py", "rt") as file:
+        mpone = file.read()
+        pattern = "(?<=(__version__ = \")).*?(?=(\"))"
+        NOW_VERSION = re.search(pattern, mpone).group()
+
+
 
     with open("pyproject.toml", "wt") as file:
         pattern = "(?<=(version = \")).*?(?=(\"))"
