@@ -4,21 +4,24 @@ import pytz
 import re
 import sys
 
-import mpone
-
-NOW_VERSION = mpone.__version__
-
 
 def fix_version():
     with open("pyproject.toml", "rt") as file:
         pyproject = file.read()
+    
+    with open("mpone/__init__.py", "rt") as file:
+        mpone = file.read()
+        pattern = "(?<=(__version__ = \")).*?(?=(\"))"
+        NOW_VERSION = re.search(pattern, mpone).group()
+
+
 
     with open("pyproject.toml", "wt") as file:
         pattern = "(?<=(version = \")).*?(?=(\"))"
         if sys.platform.startswith("win32"):
-            pyproject = re.sub(pattern, NOW_VERSION, pyproject, count=1)
-            file.write(pyproject)
-        elif sys.platform.startswith("linux"):
+            # pyproject = re.sub(pattern, NOW_VERSION, pyproject, count=1)
+            # file.write(pyproject)
+        # elif sys.platform.startswith("linux"):
             version = datetime.datetime.now(tz=pytz.timezone('Asia/Shanghai')).strftime(".dev%Y%m%d%H%M")
             pyproject = re.sub(pattern, NOW_VERSION + version, pyproject, count=1)
             file.write(pyproject)
