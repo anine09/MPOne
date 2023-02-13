@@ -32,7 +32,7 @@ def upload_win():
     print("run: python -m build")
     os.system("python -m build")
     print("run: upload to pypi")
-    # os.system("twine upload --repository pypi dist/*")
+    os.system("twine upload --repository pypi dist/*")
 
 
 def upload_linux():
