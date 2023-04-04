@@ -1,6 +1,6 @@
 from . import wk_41100
 from . import tek_2636B
 
-__support_instrument__ = """
-WAYNE KERR, 41100
-"""
+__support_instrument__ = [
+    "Tektronix Keithley 2636B",
+]

@@ -34,7 +34,7 @@ def cal_lock():
     ...
 
 
-def cal_...word():
+def cal_word():
     ...
 
 
