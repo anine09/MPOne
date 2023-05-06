@@ -1,6 +1,7 @@
 import pyvisa
 
 from .manual import tek_2636B
+from .manual import wk_41100
 
 class Instrument:
 
@@ -16,6 +17,9 @@ class Instrument:
             # Tektronix Keithley 2636B
             self.inst_type = "tek_2636B"
             self.man = tek_2636B
+        elif inst_IDN == "WAYNE KERR, 41100, 17411029, 4.143Z3\n":
+            self.inst_type = "wk_41100"
+            self.man = wk_41100
         else:
             # Not Support
             raise NotImplementedError("Temporary does not support this instrument.")
@@ -37,6 +41,10 @@ class Instrument:
             Limit = set_dict["Limit"]
             self.man.set_Limit(Limit)
 
+        if "Freq" in set_dict:
+            Freq = set_dict["Freq"]
+            self.man.set_Freq(Freq)
+ 
         if self.inst_type == "tek_2636B":
             if "Output" in set_dict:
                 Output_STATE = set_dict["Output"].upper()

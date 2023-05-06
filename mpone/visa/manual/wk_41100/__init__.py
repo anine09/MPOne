@@ -2,7 +2,8 @@ from . import MEAS
 
 
 def measure():
-    return MEAS.TRIGger()
+    value = MEAS.TRIGger()
+    return float(value[0:14]), float(value[15:-1])
 
 
 def set_Freq(frequency):
