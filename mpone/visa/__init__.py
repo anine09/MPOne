@@ -14,6 +14,7 @@ class Instrument:
     def query_inst_type(self):
         inst_IDN = self.inst.query("*IDN?\x20")
         if inst_IDN == "Keithley Instruments Inc., Model 2636B, 4308079, 3.2.2\n":
+        if inst_IDN == "Keithley Instruments Inc., Model 2636B, 4308079, 3.2.2\n":
             # Tektronix Keithley 2636B
             self.inst_type = "tek_2636B"
             self.man = tek_2636B
