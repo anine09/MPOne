@@ -1,1 +1,0 @@
-from .read_thermometer_file import read_thermometer_file
