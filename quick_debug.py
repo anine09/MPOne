@@ -17,7 +17,7 @@ n = 1
 
 while True:
     
-    command = input(f"In[{n}]@ ")
+    command = input(f"In [{n}]@ ")
     if command == "exit":
         break
     elif command[:2] == "q-":

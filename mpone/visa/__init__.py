@@ -51,7 +51,7 @@ class Instrument:
                 self.man.set_Output(Output_STATE)
 
     def measure(self, measure_func_=None):
-        if self.inst_type == "tek_2636B" and measure_func_ is not None:
+        if self.inst_type == "tek_2636B" and measure_func_:
             return self.man.measure(measure_func_)
         return self.man.measure()
 
